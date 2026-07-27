@@ -360,10 +360,10 @@
 
       <div class="field" style="margin-bottom:0;">
         <label>When do you build best?</label>
-        <div class="chrono-grid" id="chrono">
-          <div class="chrono" data-value="early_bird"><span class="emoji">&#127749;</span><span class="name">Early Bird</span><span class="time">Before 9 AM</span></div>
-          <div class="chrono" data-value="day_operator"><span class="emoji">&#9728;&#65039;</span><span class="name">Day Operator</span><span class="time">9 AM &ndash; 3 PM</span></div>
-          <div class="chrono" data-value="night_owl"><span class="emoji">&#127769;</span><span class="name">Night Owl</span><span class="time">6 PM &ndash; 2 AM</span></div>
+        <div class="chrono-grid" id="chrono" role="radiogroup" aria-label="When do you build best?">
+          <div class="chrono" data-value="early_bird" role="radio" tabindex="0" aria-checked="false"><span class="emoji">&#127749;</span><span class="name">Early Bird</span><span class="time">Before 9 AM</span></div>
+          <div class="chrono" data-value="day_operator" role="radio" tabindex="0" aria-checked="false"><span class="emoji">&#9728;&#65039;</span><span class="name">Day Operator</span><span class="time">9 AM &ndash; 3 PM</span></div>
+          <div class="chrono" data-value="night_owl" role="radio" tabindex="0" aria-checked="false"><span class="emoji">&#127769;</span><span class="name">Night Owl</span><span class="time">6 PM &ndash; 2 AM</span></div>
         </div>
         <div class="err" id="err-chrono">Pick one</div>
       </div>
@@ -568,12 +568,23 @@
 
   // chronotype
   let chronotype = null;
+  function selectChrono(card) {
+    document.querySelectorAll(".chrono").forEach(c => {
+      c.classList.remove("selected");
+      c.setAttribute("aria-checked", "false");
+    });
+    card.classList.add("selected");
+    card.setAttribute("aria-checked", "true");
+    chronotype = card.dataset.value;
+    document.getElementById("err-chrono").classList.remove("show");
+  }
   document.querySelectorAll(".chrono").forEach(card => {
-    card.addEventListener("click", () => {
-      document.querySelectorAll(".chrono").forEach(c => c.classList.remove("selected"));
-      card.classList.add("selected");
-      chronotype = card.dataset.value;
-      document.getElementById("err-chrono").classList.remove("show");
+    card.addEventListener("click", () => selectChrono(card));
+    card.addEventListener("keydown", (e) => {
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        selectChrono(card);
+      }
     });
   });
 
@@ -582,16 +593,22 @@
   const submitBtn2  = document.getElementById("submitBtn2");
   const submitNote  = document.getElementById("submitNote");
 
+  const submitNote2 = document.getElementById("submitNote2");
+
   bumpCheck.addEventListener("click", () => {
     if (isLive) return; // upsell is disabled once the cohort has gone live, see updateCountdown()
     bumpSelected = !bumpSelected;
     bumpCheck.classList.toggle("checked", bumpSelected);
     if (bumpSelected) {
       submitBtn.textContent  = "Claim my spot + Sprint Copilot → ₹499";
-      submitNote.textContent = "Sprint is free · Sprint Copilot billed at ₹499";
+      submitBtn2.textContent = "Claim my spot + Sprint Copilot → ₹499";
+      submitNote.textContent  = "Sprint is free · Sprint Copilot billed at ₹499";
+      submitNote2.textContent = "Sprint is free · Sprint Copilot billed at ₹499";
     } else {
       submitBtn.textContent  = "Claim my free spot →";
-      submitNote.textContent = "No payment to join the free sprint.";
+      submitBtn2.textContent = "Claim my free spot →";
+      submitNote.textContent  = "No payment to join the free sprint.";
+      submitNote2.textContent = "No payment to join the free sprint.";
     }
   });
 
