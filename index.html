@@ -608,7 +608,7 @@
       submitBtn.textContent  = "Claim my free spot →";
       submitBtn2.textContent = "Claim my free spot →";
       submitNote.textContent  = "No payment to join the free sprint.";
-      submitNote2.textContent = "No payment to join the free sprint.";
+      submitNote2.innerHTML   = "Cohort 02 &middot; Starts Friday 9 AM IST &middot; Free entry";
     }
   });
 
@@ -715,12 +715,14 @@
     submitBtn.textContent  = "Saving your spot...";
     submitBtn2.textContent = "Saving your spot...";
 
-    // lateSignup, consent, and consentAt are intentionally left out of this payload for now.
-    // Adding fields the deployed Firestore Security Rules don't expect (e.g. an exact-field
-    // allowlist) could make every write fail with permission-denied, silently swallowed by the
-    // catch block below, which would be worse than not adding them. Restore these three fields
-    // once the Security Rules have been verified in the Firebase Console. This keeps the original
-    // known-working 9-field payload shape.
+    // lateSignup, consent, and consentAt are intentionally left out of this payload.
+    // The deployed Firestore Security Rules now allowlist an EXACT 9-field shape
+    // (hasOnly([...])), so simply adding a field here would make every write fail
+    // with permission-denied, silently swallowed by the catch block below. Verifying
+    // the rules is NOT enough to safely add these back, the rules themselves must be
+    // updated FIRST (in the Firebase Console, widen the hasOnly() list to include the
+    // new fields), confirmed published, and only THEN should this payload change. Do
+    // not reverse that order. This keeps the original known-working 9-field shape.
     const payload = {
       name:       nameEl.value.trim(),
       email:      emailEl.value.trim(),
