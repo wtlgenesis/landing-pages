@@ -140,6 +140,7 @@
   /* order bump checkbox */
   .bump-check { background:linear-gradient(180deg, rgba(88,147,234,0.08), rgba(88,147,234,0.03)); border:1px dashed rgba(88,147,234,0.35); border-radius:var(--radius); padding:16px; margin-top:6px; margin-bottom:18px; cursor:pointer; transition:border-color 0.2s, background 0.2s; }
   .bump-check.checked { border-color:var(--blue); background:rgba(88,147,234,0.12); }
+  .bump-check.disabled { opacity:0.5; cursor:not-allowed; }
   .bump-check-row { display:flex; align-items:flex-start; gap:12px; }
   .bump-checkbox { width:20px; height:20px; border:2px solid var(--border); border-radius:3px; flex:0 0 auto; margin-top:2px; display:flex; align-items:center; justify-content:center; transition:border-color 0.2s, background 0.2s; background:var(--bg); }
   .bump-check.checked .bump-checkbox { border-color:var(--blue); background:var(--blue); }
@@ -154,6 +155,15 @@
   .bump-label .price .now { color:var(--sage); font-weight:700; }
   .bump-label .price .save { font-family:var(--font-mono); font-size:11px; color:var(--muted); }
   .off-badge { font-family:var(--font-mono); font-size:10px; font-weight:600; letter-spacing:0.5px; background:rgba(224,104,109,0.15); color:#e0686d; border:1px solid rgba(224,104,109,0.3); border-radius:3px; padding:2px 6px; vertical-align:middle; }
+
+  /* consent checkbox */
+  .consent-row { display:flex; align-items:flex-start; gap:10px; margin-top:16px; cursor:pointer; user-select:none; }
+  .consent-checkbox { width:18px; height:18px; border:2px solid var(--border); border-radius:3px; flex:0 0 auto; margin-top:2px; display:flex; align-items:center; justify-content:center; transition:border-color 0.2s, background 0.2s; background:var(--bg); }
+  .consent-checkbox.checked { border-color:var(--sage); background:var(--sage); }
+  .consent-checkbox .tick { display:none; color:#0a1a14; font-size:11px; font-weight:700; }
+  .consent-checkbox.checked .tick { display:block; }
+  .consent-text { font-size:13px; color:var(--muted); line-height:1.5; }
+  .consent-text a { color:var(--sage); text-decoration:underline; }
 
   /* buttons */
   .btn { display:block; width:100%; border:none; border-radius:var(--radius); font-family:var(--font-head); font-size:16px; font-weight:600; padding:18px; cursor:pointer; transition:filter 0.2s, transform 0.2s; }
@@ -214,7 +224,7 @@
 
   <!-- 01 HERO -->
   <div class="topbar reveal r1"><span class="dot"></span><span class="brandtag">Wired to Launch</span></div>
-  <span class="badge reveal r1"><span class="pulse"></span>Cohort 02 &middot; Starts Friday 9:00 AM IST</span>
+  <span class="badge reveal r1"><span class="pulse"></span><span id="heroBadgeText">Cohort 02 &middot; Starts Friday 9:00 AM IST</span></span>
   <h1 class="reveal r2">The 72-Hour Founder Sprint. <span class="free">Free.</span></h1>
   <p class="sub reveal r2">Pick your idea. Build your funnel. Get your first outreach done. In three days, you go from <strong>"I should start something"</strong> to <strong>a live offer with real people in the pipeline.</strong></p>
   <div class="meta-row reveal r2">
@@ -226,9 +236,9 @@
 
   <!-- countdown timer -->
   <div class="countdown-bar reveal r3" id="countdownBar">
-    <span class="countdown-label">Sprint starts in</span>
+    <span class="countdown-label" id="countdownLabel">Sprint starts in</span>
     <span class="countdown-timer" id="countdownTimer">--d --h --m</span>
-    <span class="countdown-sub">Spots close Friday 8 AM IST</span>
+    <span class="countdown-sub" id="countdownSub">Spots close Friday 8 AM IST</span>
   </div>
 
   <!-- hero card — single status line above headline -->
@@ -317,7 +327,7 @@
   <div style="margin-top:0; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; display:flex; flex-direction:column; gap:6px;">
     <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--sage);">// Cohort 01</div>
     <p style="font-size:15px; font-weight:600; color:var(--text); line-height:1.4;">216 founders registered for Cohort 01.</p>
-    <p style="font-family:var(--font-mono); font-size:12px; color:var(--muted); line-height:1.6;">Triads are matched by chronotype. &nbsp;&#183;&nbsp; Spots close Friday 8 AM IST.</p>
+    <p style="font-family:var(--font-mono); font-size:12px; color:var(--muted); line-height:1.6;">Triads are matched by chronotype. &nbsp;&#183;&nbsp; <span id="socialProofSpots">Spots close Friday 8 AM IST.</span></p>
   </div>
 
   <!-- 06 SIGN UP FORM -->
@@ -365,12 +375,17 @@
             <div class="bump-checkbox"><span class="tick">&#10003;</span></div>
             <div class="bump-label">
               <div class="bump-tag">Optional upgrade</div>
-              <strong>Add Sprint Copilot (&#8377;499)</strong>
+              <strong id="bumpLabelText">Add Sprint Copilot (&#8377;499)</strong>
               <p>Skip the blank-page paralysis. Let Sprint Copilot generate your landing page copy, pricing model, and outreach scripts for you in seconds. Sprint founders only. Normally &#8377;3,799.</p>
               <div class="price"><span class="strike">&#8377;3,799</span> <span class="now">&#8377;499</span> <span class="off-badge">87% off</span></div>
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="consent-row" id="consentRow">
+        <div class="consent-checkbox" id="consentCheckbox" role="checkbox" tabindex="0" aria-checked="false" aria-labelledby="consentText"><span class="tick" aria-hidden="true">&#10003;</span></div>
+        <span class="consent-text" id="consentText">I agree to the <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="terms.html" target="_blank" rel="noopener">Terms of Service</a>.</span>
       </div>
 
       <button class="btn btn-primary" id="submitBtn" style="margin-top:16px;">Claim my free spot &rarr;</button>
@@ -388,16 +403,18 @@
       <details class="qa"><summary>What if I don't have an idea yet? <span class="plus">+</span></summary><p>Day 1 is built to solve exactly this. You'll run a structured audit to surface ideas from your own life, then pick and validate one before Day 2 starts.</p></details>
       <details class="qa"><summary>How much time does it take? <span class="plus">+</span></summary><p>3 to 4 focused hours per day. Designed for sprint-style, burst-focused work, not marathon sessions.</p></details>
       <details class="qa"><summary>Where does it happen? <span class="plus">+</span></summary><p>Fully virtual. You'll get daily PDFs (free tier) or access to the AI tool (paid upgrade), plus WhatsApp nudges to keep you on track.</p></details>
+      <details class="qa"><summary>What if I can't make it every day? <span class="plus">+</span></summary><p>Do your best to show up for all three days. If you miss part of a day, you'll still get that day's PDF (or Sprint Copilot access) and WhatsApp nudges to catch up. Missing time just makes it harder to hit your triad's target by Sunday night.</p></details>
+      <details class="qa"><summary>Do I need a team or co-founder to join? <span class="plus">+</span></summary><p>No. You join solo and get matched into a triad of 3 founders by chronotype after signing up. You don't need a team, a validated idea, or prior experience going in.</p></details>
     </div>
   </div>
 
   <button class="btn btn-primary" id="submitBtn2" style="margin-top:8px;">Claim my free spot &rarr;</button>
-  <p class="submit-note" style="margin-bottom:32px;">Cohort 02 &middot; Starts Friday 9 AM IST &middot; Free entry</p>
+  <p class="submit-note" id="submitNote2" style="margin-bottom:32px;">Cohort 02 &middot; Starts Friday 9 AM IST &middot; Free entry</p>
 
   <!-- FOOTER -->
   <div class="footer">
     <div class="footer-src">src: <span id="srcLabel">ig01</span></div>
-    <div class="footer-info">WiredToLaunch &middot; MSME Registered &middot; <a href="mailto:hello@wiredtolaunch.in">hello@wiredtolaunch.in</a></div>
+    <div class="footer-info">WiredToLaunch &middot; MSME Registered &middot; <a href="mailto:hello@wiredtolaunch.in">hello@wiredtolaunch.in</a> &middot; <a href="privacy.html" target="_blank" rel="noopener">Privacy</a> &middot; <a href="terms.html" target="_blank" rel="noopener">Terms</a></div>
   </div>
 
 </div><!-- /wrap -->
@@ -405,16 +422,16 @@
 <!-- sticky cta -->
 <div class="sticky-cta" id="stickyCta">
   <div class="inner">
-    <div class="label"><b>Free 72-Hour Sprint</b><span>Starts Friday 9 AM &middot; &#8377;10,000 prize pool</span></div>
+    <div class="label"><b>Free 72-Hour Sprint</b><span id="stickyLabel">Starts Friday 9 AM &middot; &#8377;10,000 prize pool</span></div>
     <button class="btn btn-primary" id="stickyBtn">Claim spot &rarr;</button>
   </div>
 </div>
 
 <!-- post-submit interstitial (paid path only — free path skips this) -->
-<div class="interstitial" id="interstitial">
+<div class="interstitial" id="interstitial" role="dialog" aria-modal="true" aria-labelledby="interstitialHeading">
   <div class="inter-inner">
     <div class="inter-badge">&#10003; You're in. Spot reserved.</div>
-    <h2>Add Sprint Copilot to your spot</h2>
+    <h2 id="interstitialHeading">Add Sprint Copilot to your spot</h2>
     <p class="idesc">Skip the blank-page paralysis. Sprint Copilot generates your landing page copy, pricing model, and outreach scripts in seconds.</p>
     <p class="iprice"><span class="strike">&#8377;3,799</span> &nbsp;<span class="now">&#8377;499</span></p>
     <button class="btn btn-sage" id="upgradeBtn">Pay &#8377;499 and get access &rarr;</button>
@@ -422,34 +439,115 @@
   </div>
 </div>
 
+<!-- registration confirmation overlay, shown before and through the WhatsApp/Cosmofeed redirect attempt -->
+<div class="interstitial" id="confirmOverlay" role="status" aria-live="polite">
+  <div class="inter-inner" style="text-align:center;">
+    <div class="inter-badge" id="confirmBadge">&#10003; Registration confirmed</div>
+    <h2 id="confirmHeading">You're in.</h2>
+    <p class="idesc" id="confirmMsg">Redirecting you to WhatsApp...</p>
+    <a class="btn btn-sage" id="confirmFallbackLink" href="#" target="_blank" rel="noopener" style="margin-top:10px; text-decoration:none; text-align:center;">Didn't get redirected? Tap here to continue &rarr;</a>
+  </div>
+</div>
+
 <script type="module">
-  // countdown timer — targets next Friday 9:00 AM IST (UTC+5:30)
-  function getNextFriday9AM() {
-    const now = new Date();
-    const istOffset = 5.5 * 60 * 60 * 1000;
-    const nowIST = new Date(now.getTime() + istOffset);
-    const day = nowIST.getUTCDay(); // 0=Sun, 5=Fri
-    const daysUntilFri = (5 - day + 7) % 7 || 7; // if today is Friday past 9AM, next Friday
-    const target = new Date(Date.UTC(
-      nowIST.getUTCFullYear(), nowIST.getUTCMonth(), nowIST.getUTCDate() + daysUntilFri,
-      3, 30, 0 // 9:00 AM IST = 03:30 UTC
-    ));
-    // if today is Friday and before 9AM IST, use today
-    if (day === 5) {
-      const todayFri = new Date(Date.UTC(
-        nowIST.getUTCFullYear(), nowIST.getUTCMonth(), nowIST.getUTCDate(), 3, 30, 0
-      ));
-      if (now < todayFri) return todayFri;
+  // cohort live window, recurring every week: Friday 9:00 AM IST through the following Monday 9:00 AM IST (72 hours)
+  const LIVE_MS = 72 * 60 * 60 * 1000;   // 72-hour live window
+  const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+  // Update this when Cohort 02 wraps and a new cohort is scheduled.
+  const COHORT_ACTIVE = true; // set to false to disable the recurring live-window entirely, falls back to a generic "next cohort" message
+
+  function getMostRecentFriday930UTC(now) {
+    // returns the most recent Friday 03:30:00.000 UTC (= 9:00 AM IST) at or before `now`
+    const candidate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 3, 30, 0, 0));
+    const day = now.getUTCDay(); // 0=Sun..6=Sat, Friday=5
+    const daysSinceFriday = (day - 5 + 7) % 7; // 0 if today is Friday
+    let base = new Date(candidate.getTime() - daysSinceFriday * 24 * 60 * 60 * 1000);
+    if (daysSinceFriday === 0 && now.getTime() < candidate.getTime()) {
+      // it's Friday but before 03:30 UTC (9 AM IST), so the "most recent" Friday window is last week's
+      base = new Date(base.getTime() - WEEK_MS);
     }
-    return target;
+    return base;
   }
+
+  let isLive = false;
+  let wasLive = false;
+  let bumpSelected = false;
+  const bumpCheck = document.getElementById("bumpCheck");
+
+  // tracks whether the most recent registration write actually succeeded, declared here (before
+  // updateCountdown() first runs) so the live-window force-close path below can safely reference
+  // it without a TDZ error; defaults to true since it is only read after a real submission
+  let saved = true;
+
+  // redirect URLs — declared here (before updateCountdown() first runs) so the live-window
+  // force-close path below can safely reference them without a TDZ error
+  const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/C7putrWEbyH9hHJvR5JEDw?mode=gi_t";
+  const COSMOFEED_URL      = "https://superprofile.bio/vp/the-72-hour-founder-sprint";
+
   function updateCountdown() {
-    const target = getNextFriday9AM();
-    const diff = target - Date.now();
-    if (diff <= 0) {
-      document.getElementById("countdownTimer").textContent = "Live now!";
+    if (!COHORT_ACTIVE) {
+      isLive = false;
+      document.getElementById("countdownLabel").textContent = "Cohort status";
+      document.getElementById("countdownTimer").textContent = "Coming soon";
+      document.getElementById("countdownSub").textContent = "Registrations for the next cohort open soon.";
+      document.getElementById("socialProofSpots").textContent = "Registrations for the next cohort open soon.";
+      document.getElementById("heroBadgeText").textContent = "Registrations for the next cohort open soon";
+      document.getElementById("submitNote2").textContent = "Registrations for the next cohort open soon.";
       return;
     }
+
+    const now = new Date();
+    const windowStart = getMostRecentFriday930UTC(now);
+    const windowEnd = new Date(windowStart.getTime() + LIVE_MS);
+    isLive = now.getTime() < windowEnd.getTime();
+    const diff = isLive ? null : (windowStart.getTime() + WEEK_MS) - now.getTime();
+
+    if (isLive) {
+      // forcibly close the paid interstitial every tick while live (no-op once it's already closed)
+      const interstitialEl = document.getElementById("interstitial");
+      if (interstitialEl.classList.contains("show")) {
+        interstitialEl.classList.remove("show");
+        document.body.style.overflow = "";
+        const c = freeConfirmCopy(saved);
+        showConfirmationThenRedirect(WHATSAPP_GROUP_URL, "FREE / WhatsApp group", c.heading, c.message, c.badge, "Tap here to open WhatsApp");
+      }
+      document.getElementById("countdownTimer").textContent = "Live now!";
+      if (!wasLive) {
+        wasLive = true;
+        // order bump is a same-cohort upsell, so force it off and lock it once the cohort has gone live
+        bumpSelected = false;
+        bumpCheck.classList.remove("checked");
+        bumpCheck.classList.add("disabled");
+        document.getElementById("countdownLabel").textContent = "Cohort status";
+        document.getElementById("submitBtn").textContent  = "Join now, sprint in progress →";
+        document.getElementById("submitBtn2").textContent = "Join now, sprint in progress →";
+        document.getElementById("stickyBtn").textContent  = "Join now →";
+        document.getElementById("submitNote").textContent = "This cohort is already underway. You'll jump in and catch up fast.";
+        document.getElementById("submitNote2").textContent = "This cohort is already underway. You'll jump in and catch up fast.";
+        document.getElementById("heroBadgeText").innerHTML = "Live now &middot; join in progress";
+        document.getElementById("countdownSub").innerHTML = "Cohort is live now &middot; join in progress";
+        document.getElementById("socialProofSpots").innerHTML = "Cohort is live now &middot; join in progress.";
+        document.getElementById("stickyLabel").innerHTML = "Live now &middot; join in progress";
+      }
+      return;
+    }
+
+    if (wasLive) {
+      wasLive = false;
+      bumpCheck.classList.remove("disabled");
+      document.getElementById("countdownLabel").textContent = "Sprint starts in";
+      document.getElementById("submitBtn").textContent  = "Claim my free spot →";
+      document.getElementById("submitBtn2").textContent = "Claim my free spot →";
+      document.getElementById("stickyBtn").textContent  = "Claim spot →";
+      document.getElementById("submitNote").textContent = "No payment to join the free sprint.";
+      document.getElementById("submitNote2").innerHTML = "Cohort 02 &middot; Starts Friday 9 AM IST &middot; Free entry";
+      document.getElementById("heroBadgeText").innerHTML = "Cohort 02 &middot; Starts Friday 9:00 AM IST";
+      document.getElementById("countdownSub").textContent = "Spots close Friday 8 AM IST";
+      document.getElementById("socialProofSpots").textContent = "Spots close Friday 8 AM IST.";
+      document.getElementById("stickyLabel").innerHTML = "Starts Friday 9 AM &middot; &#8377;10,000 prize pool";
+    }
+
     const d = Math.floor(diff / 86400000);
     const h = Math.floor((diff % 86400000) / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
@@ -468,10 +566,6 @@
   const SRC = SRC_MAP[location.hostname.replace(/^www\./,"")] || "ig01";
   document.getElementById("srcLabel").textContent = SRC;
 
-  // placeholder redirect URLs — replace before go-live
-  const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/C7putrWEbyH9hHJvR5JEDw?mode=gi_t";
-  const COSMOFEED_URL      = "https://superprofile.bio/vp/the-72-hour-founder-sprint";
-
   // chronotype
   let chronotype = null;
   document.querySelectorAll(".chrono").forEach(card => {
@@ -484,13 +578,12 @@
   });
 
   // order bump toggle
-  let bumpSelected = false;
-  const bumpCheck   = document.getElementById("bumpCheck");
   const submitBtn   = document.getElementById("submitBtn");
   const submitBtn2  = document.getElementById("submitBtn2");
   const submitNote  = document.getElementById("submitNote");
 
   bumpCheck.addEventListener("click", () => {
+    if (isLive) return; // upsell is disabled once the cohort has gone live, see updateCountdown()
     bumpSelected = !bumpSelected;
     bumpCheck.classList.toggle("checked", bumpSelected);
     if (bumpSelected) {
@@ -499,6 +592,31 @@
     } else {
       submitBtn.textContent  = "Claim my free spot →";
       submitNote.textContent = "No payment to join the free sprint.";
+    }
+  });
+
+  // consent checkbox, informational only, does not gate submission (see validate())
+  let consentAccepted = false;
+  let consentAt = null;
+  const consentRow      = document.getElementById("consentRow");
+  const consentCheckbox = document.getElementById("consentCheckbox");
+
+  function toggleConsent() {
+    consentAccepted = !consentAccepted;
+    consentAt = consentAccepted ? new Date().toISOString() : null;
+    consentCheckbox.classList.toggle("checked", consentAccepted);
+    consentCheckbox.setAttribute("aria-checked", String(consentAccepted));
+  }
+
+  consentRow.addEventListener("click", (e) => {
+    if (e.target.closest("a")) return;
+    toggleConsent();
+  });
+
+  consentCheckbox.addEventListener("keydown", (e) => {
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault();
+      toggleConsent();
     }
   });
 
@@ -542,17 +660,50 @@
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
 
+  // races a promise against a timeout, used so an offline addDoc() call (which never resolves on
+  // its own while offline) cannot leave the user stuck with no feedback forever
+  function withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms)),
+    ]);
+  }
+
+  // blocks a second call to handleSubmit() from ever re-entering the function, regardless of
+  // overlay/inert state; this is the primary defense against a second tap creating a duplicate
+  // registration (see submitInFlight usage below)
+  let submitInFlight = false;
+
   async function handleSubmit() {
+    if (submitInFlight) return;
+    submitInFlight = true;
+
+    // snapshot the bump-toggle intent at submit time, so a toggle mid-write can't desync the
+    // payload from which post-write path (paid interstitial vs. free confirmation) actually fires
+    const bumpSnapshot = bumpSelected;
+
     if (!validate()) {
+      // validation failure isn't a real submission attempt, so release the guard and let the
+      // user try again after fixing the flagged fields
+      submitInFlight = false;
       document.getElementById("formCard").scrollIntoView({behavior:"smooth", block:"start"});
       return;
     }
 
+    setContentInert(true);
     submitBtn.disabled  = true;
     submitBtn2.disabled = true;
-    const orig = submitBtn.textContent;
-    submitBtn.textContent = "Saving your spot...";
+    const orig  = submitBtn.textContent;
+    const orig2 = submitBtn2.textContent;
+    submitBtn.textContent  = "Saving your spot...";
+    submitBtn2.textContent = "Saving your spot...";
 
+    // lateSignup, consent, and consentAt are intentionally left out of this payload for now.
+    // Adding fields the deployed Firestore Security Rules don't expect (e.g. an exact-field
+    // allowlist) could make every write fail with permission-denied, silently swallowed by the
+    // catch block below, which would be worse than not adding them. Restore these three fields
+    // once the Security Rules have been verified in the Firebase Console. This keeps the original
+    // known-working 9-field payload shape.
     const payload = {
       name:       nameEl.value.trim(),
       email:      emailEl.value.trim(),
@@ -565,22 +716,41 @@
       created_at: serverTimestamp()
     };
 
+    saved = false;
     try {
-      await addDoc(collection(db, "registrations"), payload);
+      await withTimeout(addDoc(collection(db, "registrations"), payload), 8000);
+      saved = true;
       console.log("[WTL] registration saved:", payload);
     } catch (err) {
       console.error("[WTL] Firestore error:", err);
-      // Don't block the user — still redirect even if write fails
+      // stash a recoverable trace of the attempted registration; nothing on this static page
+      // reads this back today, but it can be recovered manually from the user's device if needed
+      try {
+        localStorage.setItem("wtl_failed_registration", JSON.stringify({
+          name: payload.name, email: payload.email, phone: payload.phone,
+          chronotype: payload.chronotype, src: payload.src, paid: payload.paid,
+          ref: payload.ref, userAgent: payload.userAgent,
+          created_at: new Date().toISOString()
+        }));
+      } catch (storageErr) {
+        console.error("[WTL] Could not stash failed registration to localStorage:", storageErr);
+      }
+    } finally {
+      submitBtn.disabled  = false;
+      submitBtn2.disabled = false;
+      submitBtn.textContent  = orig;
+      submitBtn2.textContent = orig2;
+      setContentInert(false);
     }
 
-    submitBtn.disabled  = false;
-    submitBtn2.disabled = false;
-    submitBtn.textContent = orig;
-
-    if (bumpSelected) {
+    if (bumpSnapshot && saved) {
       showInterstitial();
     } else {
-      safeRedirect(WHATSAPP_GROUP_URL, "FREE / WhatsApp group");
+      // If the write failed, never show the paid upsell, that would confirm a registration
+      // that doesn't exist right before taking real money for it. Route through the same
+      // honest free-path copy instead, regardless of whether they'd selected the bump.
+      const c = freeConfirmCopy(saved);
+      showConfirmationThenRedirect(WHATSAPP_GROUP_URL, "FREE / WhatsApp group", c.heading, c.message, c.badge, "Tap here to open WhatsApp");
     }
   }
 
@@ -590,27 +760,99 @@
     document.getElementById("formCard").scrollIntoView({behavior:"smooth", block:"start"});
   });
 
+  // while any full-screen overlay is up, make the main content + sticky CTA unreachable (inert
+  // removes them from the tab order and blocks Enter/Space activation), so a keyboard user can't
+  // fire a second handleSubmit() behind the overlay
+  function setContentInert(disabled) {
+    document.querySelector(".wrap").toggleAttribute("inert", disabled);
+    document.getElementById("stickyCta").toggleAttribute("inert", disabled);
+  }
+
   // interstitial (paid path only)
   function showInterstitial() {
     document.getElementById("interstitial").classList.add("show");
     document.body.style.overflow = "hidden";
+    setContentInert(true);
     window.scrollTo(0,0);
+    document.getElementById("upgradeBtn").focus();
   }
-  document.getElementById("upgradeBtn").addEventListener("click", () => safeRedirect(COSMOFEED_URL, "PAID / Cosmofeed"));
-  document.getElementById("skipUpgradeBtn").addEventListener("click", () => {
+  document.getElementById("upgradeBtn").addEventListener("click", () => {
     document.getElementById("interstitial").classList.remove("show");
-    document.body.style.overflow = "";
-    safeRedirect(WHATSAPP_GROUP_URL, "FREE / WhatsApp group");
-  });
-
-  function safeRedirect(url, label) {
-    if (url.startsWith("#PLACEHOLDER")) {
-      // dev-only: show which path would fire, no visible error to users
-      console.log("[WTL] redirect placeholder:", label);
+    if (isLive) {
+      // order-bump upsell is disabled once live, so route through the same live-signup flow as the free path
+      const c = freeConfirmCopy(saved);
+      showConfirmationThenRedirect(WHATSAPP_GROUP_URL, "FREE / WhatsApp group", c.heading, c.message, c.badge, "Tap here to open WhatsApp");
       return;
     }
+    showConfirmationThenRedirect(COSMOFEED_URL, "PAID / Cosmofeed", "Almost there.", "Taking you to secure checkout...", null, "Tap here to open checkout");
+  });
+  function skipUpgrade() {
+    document.getElementById("interstitial").classList.remove("show");
+    const c = freeConfirmCopy(saved);
+    showConfirmationThenRedirect(WHATSAPP_GROUP_URL, "FREE / WhatsApp group", c.heading, c.message, c.badge, "Tap here to open WhatsApp");
+  }
+  document.getElementById("skipUpgradeBtn").addEventListener("click", skipUpgrade);
+  // Escape closes the paid-upsell interstitial the same way "skip" does, keeps the free path moving instead of leaving a keyboard user stuck
+  document.getElementById("interstitial").addEventListener("keydown", (e) => {
+    if (e.key === "Escape") skipUpgrade();
+  });
+
+  // copy for the free-path confirmation overlay: reflects whether the write actually succeeded,
+  // and once saved, whether the cohort has already gone live (mid-sprint join, not a waitlist)
+  function freeConfirmCopy(didSave) {
+    if (!didSave) {
+      return {
+        badge: "Almost there",
+        heading: "Almost there.",
+        message: "We couldn't confirm your registration just now. You're still welcome to join the group, and if you don't hear from us within a day, email hello@wiredtolaunch.in so we can add you manually."
+      };
+    }
+    return isLive
+      ? { badge: "&#10003; Registration confirmed", heading: "You're in.", message: "This cohort is already underway, redirecting you to the WhatsApp group..." }
+      : { badge: "&#10003; Registration confirmed", heading: "You're in.", message: "Redirecting you to WhatsApp..." };
+  }
+
+  // confirmation overlay, shown before redirecting to WhatsApp/Cosmofeed
+  // guarded against being called twice (e.g. a synthesized second tap) so it can never schedule two redirects
+  let redirecting = false;
+  function showConfirmationThenRedirect(url, label, heading, message, badge, fallbackText) {
+    if (redirecting) return;
+    redirecting = true;
+    document.getElementById("confirmBadge").innerHTML = badge || "&#10003; Registration confirmed";
+    document.getElementById("confirmHeading").textContent = heading;
+    document.getElementById("confirmMsg").textContent = message;
+    const fallbackLink = document.getElementById("confirmFallbackLink");
+    fallbackLink.href = url;
+    fallbackLink.textContent = "Didn't get redirected? " + (fallbackText || "Tap here to continue") + " →";
+    document.getElementById("confirmOverlay").classList.add("show");
+    document.body.style.overflow = "hidden";
+    setContentInert(true);
+    window.scrollTo(0,0);
+    // the overlay is deliberately left showing through and after the redirect attempt, instead of
+    // being hidden first: on Android/iOS with WhatsApp installed, the OS can hand off to the app
+    // while this tab stays put with no navigation ever happening, so hiding the overlay here would
+    // drop the user back into a fully interactive page with no visible confirmation of what
+    // happened. The fallback link above lives outside the inert wrap, so it always stays reachable.
+    setTimeout(() => {
+      safeRedirect(url, label);
+    }, 1400);
+  }
+
+  function safeRedirect(url, label) {
     window.location.href = url;
   }
+
+  // bfcache/back-button: reset any stuck overlay if the page is restored from cache
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) {
+      document.getElementById("confirmOverlay").classList.remove("show");
+      document.getElementById("interstitial").classList.remove("show");
+      document.body.style.overflow = "";
+      setContentInert(false);
+      redirecting = false;
+      submitInFlight = false;
+    }
+  });
 </script>
 </body>
 </html>
