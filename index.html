@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The 72-Hour Founder Sprint</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -238,7 +238,7 @@
   <div class="countdown-bar reveal r3" id="countdownBar">
     <span class="countdown-label" id="countdownLabel">Sprint starts in</span>
     <span class="countdown-timer" id="countdownTimer">--d --h --m</span>
-    <span class="countdown-sub" id="countdownSub">Spots close Friday 8 AM IST</span>
+    <span class="countdown-sub" id="countdownSub">Spots close Friday 9 AM IST</span>
   </div>
 
   <!-- hero card — single status line above headline -->
@@ -327,7 +327,7 @@
   <div style="margin-top:0; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; display:flex; flex-direction:column; gap:6px;">
     <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--sage);">// Cohort 01</div>
     <p style="font-size:15px; font-weight:600; color:var(--text); line-height:1.4;">216 founders registered for Cohort 01.</p>
-    <p style="font-family:var(--font-mono); font-size:12px; color:var(--muted); line-height:1.6;">Triads are matched by chronotype. &nbsp;&#183;&nbsp; <span id="socialProofSpots">Spots close Friday 8 AM IST.</span></p>
+    <p style="font-family:var(--font-mono); font-size:12px; color:var(--muted); line-height:1.6;">Triads are matched by chronotype. &nbsp;&#183;&nbsp; <span id="socialProofSpots">Spots close Friday 9 AM IST.</span></p>
   </div>
 
   <!-- 06 SIGN UP FORM -->
@@ -543,8 +543,8 @@
       document.getElementById("submitNote").textContent = "No payment to join the free sprint.";
       document.getElementById("submitNote2").innerHTML = "Cohort 02 &middot; Starts Friday 9 AM IST &middot; Free entry";
       document.getElementById("heroBadgeText").innerHTML = "Cohort 02 &middot; Starts Friday 9:00 AM IST";
-      document.getElementById("countdownSub").textContent = "Spots close Friday 8 AM IST";
-      document.getElementById("socialProofSpots").textContent = "Spots close Friday 8 AM IST.";
+      document.getElementById("countdownSub").textContent = "Spots close Friday 9 AM IST";
+      document.getElementById("socialProofSpots").textContent = "Spots close Friday 9 AM IST.";
       document.getElementById("stickyLabel").innerHTML = "Starts Friday 9 AM &middot; &#8377;10,000 prize pool";
     }
 
@@ -739,7 +739,7 @@
     try {
       await withTimeout(addDoc(collection(db, "registrations"), payload), 8000);
       saved = true;
-      console.log("[WTL] registration saved:", payload);
+      console.log("[WTL] registration saved");
     } catch (err) {
       console.error("[WTL] Firestore error:", err);
       // stash a recoverable trace of the attempted registration; nothing on this static page
